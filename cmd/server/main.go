@@ -1,16 +1,19 @@
 // инициализация DB и запуск gRPC
-package server
+package main
 
 import (
+	"github.com/Saneckeg/users-service/internal/database"
+	"github.com/Saneckeg/users-service/internal/transport/grpc"
+	"github.com/Saneckeg/users-service/internal/user"
 	"log"
-	"user-service/internal/database"
-	"user-service/internal/user"
 )
 
 func main() {
-
 	database.InitDB()
-	if err := database.DB.AutoMigrate(&user.User{}); err != nil {
-		log.Fatalf("Migration failed: %v", err)
+	repo := user.NewUserRepository(database.DB)
+	svc := user.NewService(repo)
+
+	if err := grpc.RunGRPC(svc); err != nil {
+		log.Fatalf("gRPC сервер завершился с ошибкой: %v", err)
 	}
 }

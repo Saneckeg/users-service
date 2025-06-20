@@ -3,7 +3,7 @@ module github.com/Saneckeg/users-service
 go 1.23.4
 
 require (
-	github.com/Saneckeg/project-protos v1.0.0
+	github.com/Saneckeg/project-protos v1.1.1
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.30.0
 )
