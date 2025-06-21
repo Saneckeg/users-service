@@ -10,6 +10,7 @@ import (
 type UserRepository interface {
 	CreateUser(task User) (User, error)
 	GetAllUsers() ([]User, error)
+	GetUser(id int) (User, error)
 	UpdateUserByID(id uint, task interface{}) (User, error)
 	DeleteUserByID(id uint) (User, error)
 }
@@ -36,6 +37,18 @@ func (r *userRepository) GetAllUsers() ([]User, error) {
 	err := r.db.Find(&user).Error
 	if err != nil {
 		log.Println("Ошибка при получении данных:", err)
+	}
+
+	return user, err
+}
+
+func (r *userRepository) GetUser(id int) (User, error) {
+	var user User
+
+	err := r.db.First(&user, id).Error
+	if err != nil {
+		log.Println("Ошибка при получении пользователя:", err)
+		return User{}, err
 	}
 
 	return user, err

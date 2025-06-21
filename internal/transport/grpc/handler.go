@@ -55,6 +55,21 @@ func (h *Handler) ListUsers(ctx context.Context, req *userpb.ListUsersRequest) (
 	return &userpb.ListUsersResponse{Users: userspb}, nil
 }
 
+func (h *Handler) GetUser(ctx context.Context, req *userpb.GetUserRequest) (*userpb.GetUserResponse, error) {
+
+	user, err := h.svc.GetUser(int(req.Id))
+	if err != nil {
+		return nil, err
+	}
+
+	return &userpb.GetUserResponse{
+		User: &userpb.User{
+			Id:    user.Id,
+			Email: user.Email,
+		},
+	}, nil
+}
+
 func (h *Handler) UpdateUser(ctx context.Context, req *userpb.UpdateUserRequest) (*userpb.UpdateUserResponse, error) {
 
 	updatedUser, err := h.svc.UpdateUserByID(uint(req.User.Id), user.User{
